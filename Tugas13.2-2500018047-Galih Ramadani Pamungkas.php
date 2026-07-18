@@ -1,10 +1,5 @@
 <?php
-/**
- * Sistem Manajemen Inventaris Sederhana
- * Memanfaatkan Array dan Function di PHP
- */
 
-// ===== DATA INVENTARIS (Array Asosiatif) =====
 $inventaris = [
     "BRG001" => ["nama" => "Laptop ASUS", "kategori" => "Elektronik", "stok" => 15, "harga" => 12000000],
     "BRG002" => ["nama" => "Mouse Logitech", "kategori" => "Aksesoris", "stok" => 50, "harga" => 350000],
@@ -12,22 +7,10 @@ $inventaris = [
     "BRG004" => ["nama" => "Monitor LG 24 inch", "kategori" => "Elektronik", "stok" => 10, "harga" => 2500000],
     "BRG005" => ["nama" => "Webcam HD", "kategori" => "Aksesoris", "stok" => 25, "harga" => 450000],
 ];
-
-// ===== FUNGSI-FUNGSI =====
-
-/**
- * Fungsi tanpa return value & tanpa parameter
- * Menampilkan header aplikasi
- */
 function tampilkanHeader() {
     echo "<h1>📦 Sistem Manajemen Inventaris</h1>";
     echo "<hr>";
 }
-
-/**
- * Fungsi tanpa return value tapi dengan parameter
- * Menampilkan seluruh data inventaris dalam tabel
- */
 function tampilkanInventaris($data) {
     echo "<h2>Daftar Barang</h2>";
     echo "<table border='1' cellpadding='10' cellspacing='0'>";
@@ -39,7 +22,6 @@ function tampilkanInventaris($data) {
             <th>Harga</th>
           </tr>";
     
-    // Menggunakan foreach untuk array asosiatif
     foreach ($data as $kode => $barang) {
         echo "<tr>";
         echo "<td>{$kode}</td>";
@@ -51,11 +33,6 @@ function tampilkanInventaris($data) {
     }
     echo "</table><br>";
 }
-
-/**
- * Fungsi dengan return value & parameter
- * Menghitung total nilai inventaris
- */
 function hitungTotalNilai($data) {
     $total = 0;
     foreach ($data as $barang) {
@@ -64,10 +41,6 @@ function hitungTotalNilai($data) {
     return $total;
 }
 
-/**
- * Fungsi dengan return value
- * Menghitung jumlah total item
- */
 function hitungTotalStok($data) {
     $totalStok = 0;
     foreach ($data as $barang) {
@@ -76,10 +49,7 @@ function hitungTotalStok($data) {
     return $totalStok;
 }
 
-/**
- * Fungsi untuk mencari barang berdasarkan kode
- * Menggunakan array_key_exists()
- */
+
 function cariBarangByKode($kode, $data) {
     if (array_key_exists($kode, $data)) {
         return $data[$kode];
@@ -87,10 +57,6 @@ function cariBarangByKode($kode, $data) {
     return null;
 }
 
-/**
- * Fungsi untuk mencari barang berdasarkan nama
- * Menggunakan foreach dan pencocokan string
- */
 function cariBarangByNama($namaCari, $data) {
     $hasil = [];
     foreach ($data as $kode => $barang) {
@@ -101,9 +67,6 @@ function cariBarangByNama($namaCari, $data) {
     return $hasil;
 }
 
-/**
- * Fungsi untuk filter berdasarkan kategori
- */
 function filterByKategori($kategori, $data) {
     $hasil = [];
     foreach ($data as $kode => $barang) {
@@ -114,10 +77,6 @@ function filterByKategori($kategori, $data) {
     return $hasil;
 }
 
-/**
- * Fungsi untuk mengurutkan berdasarkan harga
- * Passing by reference untuk memodifikasi array asli
- */
 function urutkanByHarga(&$data, $ascending = true) {
     uasort($data, function($a, $b) use ($ascending) {
         if ($ascending) {
@@ -127,9 +86,6 @@ function urutkanByHarga(&$data, $ascending = true) {
     });
 }
 
-/**
- * Fungsi untuk menampilkan statistik
- */
 function tampilkanStatistik($data) {
     $totalNilai = hitungTotalNilai($data);
     $totalStok = hitungTotalStok($data);
@@ -143,9 +99,6 @@ function tampilkanStatistik($data) {
     echo "</table><br>";
 }
 
-/**
- * Fungsi untuk menampilkan struktur array (debugging)
- */
 function tampilkanStrukturArray($data, $judul = "Struktur Array") {
     echo "<h3>{$judul}</h3>";
     echo "<pre>";
@@ -153,7 +106,7 @@ function tampilkanStrukturArray($data, $judul = "Struktur Array") {
     echo "</pre>";
 }
 
-// ===== EKSEKUSI PROGRAM =====
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -169,16 +122,12 @@ function tampilkanStrukturArray($data, $judul = "Struktur Array") {
 <body>
 
 <?php
-// 1. Tampilkan header
 tampilkanHeader();
 
-// 2. Tampilkan semua inventaris
 tampilkanInventaris($inventaris);
 
-// 3. Tampilkan statistik
 tampilkanStatistik($inventaris);
 
-// 4. Demo pencarian by kode
 echo "<h2>🔍 Pencarian Barang</h2>";
 $kodeCari = "BRG003";
 $hasilCari = cariBarangByKode($kodeCari, $inventaris);
@@ -192,21 +141,17 @@ if ($hasilCari) {
     echo "</div><br>";
 }
 
-// 5. Demo filter kategori
 echo "<h2>📁 Filter Kategori: Aksesoris</h2>";
 $aksesoris = filterByKategori("Aksesoris", $inventaris);
 tampilkanInventaris($aksesoris);
 
-// 6. Demo pengurutan (passing by reference)
 echo "<h2>📈 Urutan Harga (Termurah ke Termahal)</h2>";
-$dataUrut = $inventaris; // Copy array
+$dataUrut = $inventaris; 
 urutkanByHarga($dataUrut, true);
 tampilkanInventaris($dataUrut);
 
-// 7. Tampilkan struktur array untuk debugging
 tampilkanStrukturArray($inventaris, "Debug: Struktur Data Inventaris");
 
-// 8. Cek fungsi yang tersedia
 echo "<h2>ℹ️ Info Fungsi</h2>";
 $fungsiUser = ["tampilkanHeader", "tampilkanInventaris", "hitungTotalNilai", 
                "cariBarangByKode", "filterByKategori", "urutkanByHarga"];
